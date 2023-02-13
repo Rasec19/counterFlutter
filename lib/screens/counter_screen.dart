@@ -10,6 +10,21 @@ class CounterScreen extends StatefulWidget {
 class _CounterScreenState extends State<CounterScreen> {
   int counter = 0;
 
+  void increase() {
+    counter++;
+    setState(() {});
+  }
+
+  void substract() {
+    counter--;
+    setState(() {});
+  }
+
+  void reset() {
+    counter = 0;
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     const fontSize = TextStyle(fontSize: 30);
@@ -29,35 +44,48 @@ class _CounterScreenState extends State<CounterScreen> {
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: <Widget>[
-          FloatingActionButton(
-            onPressed: () {
-              counter--;
-              setState(() {});
-            },
-            backgroundColor: Colors.blue,
-            child: const Icon(Icons.exposure_minus_1),
-          ),
-          FloatingActionButton(
-            onPressed: () {
-              counter = 0;
-              setState(() {});
-            },
-            backgroundColor: Colors.blue,
-            child: const Icon(Icons.restart_alt_rounded),
-          ),
-          FloatingActionButton(
-            onPressed: () {
-              counter++;
-              setState(() {});
-            },
-            backgroundColor: Colors.blue,
-            child: const Icon(Icons.plus_one),
-          ),
-        ],
+      floatingActionButton: CustomFloatingActions(
+        increaseFn: increase,
+        substractFn: substract,
+        resetFn: reset,
       ),
+    );
+  }
+}
+
+class CustomFloatingActions extends StatelessWidget {
+  final Function increaseFn;
+  final Function substractFn;
+  final Function resetFn;
+
+  const CustomFloatingActions({
+    Key? key,
+    required this.increaseFn,
+    required this.substractFn,
+    required this.resetFn,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: <Widget>[
+        FloatingActionButton(
+          onPressed: () => substractFn(),
+          backgroundColor: Colors.blue,
+          child: const Icon(Icons.exposure_minus_1),
+        ),
+        FloatingActionButton(
+          onPressed: () => resetFn(),
+          backgroundColor: Colors.blue,
+          child: const Icon(Icons.restart_alt_rounded),
+        ),
+        FloatingActionButton(
+          onPressed: () => increaseFn(),
+          backgroundColor: Colors.blue,
+          child: const Icon(Icons.plus_one),
+        ),
+      ],
     );
   }
 }
